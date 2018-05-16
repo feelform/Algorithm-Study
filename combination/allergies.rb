@@ -19,20 +19,22 @@ class Allergies
       }                                                                             # => ["dara", "minzy", "cl"], ["dara", "minzy", "cl"]
     }                                                                               # => [0, 1]
 
-    menu                                                     # => {0=>{"dara"=>1, "minzy"=>1, "cl"=>0}, 1=>{"dara"=>0, "minzy"=>1, "cl"=>1}}
-    1.upto(@values.keys.length).each { |food_index|          # => #<Enumerator: 1:upto(2)>
-      food_index                                             # => 1,                                    2
+    (1..@values.keys.length).each { |food_index|             # => 1..2
       @values.keys.combination(food_index).select { |foods|  # => #<Enumerator: [0, 1]:combination(1)>, #<Enumerator: [0, 1]:combination(2)>
-        foods.each { |food|                                  # => [0], [1], [0, 1]
-          food                                               # => 0,     1,     0,     1
-          menu[food].values.all? { |value| value > 0 }       # => false, false, false, false
-        }                                                    # => [0], [1], [0, 1]
-      }                                                      # => [[0], [1]], [[0, 1]]
-    }                                                        # => 1
-  end                                                        # => :list
-end                                                          # => :list
 
-allergies = Allergies.new()       # => #<Allergies:0x00007fca108a4648 @values={}>
+        available_friends = foods.flat_map { |food|  # => [0], [1], [0, 1]
+          menu[food].select {|k,v| v > 0}.keys       # => ["dara", "minzy"], ["minzy", "cl"], ["dara", "minzy"], ["minzy", "cl"]
+        }.uniq                                       # => ["dara", "minzy"], ["minzy", "cl"], ["dara", "minzy", "cl"]
+
+        if friends == available_friends  # => false, false, true
+          return foods                   # => [0, 1]
+        end
+      }                                  # => []
+    }
+  end                                    # => :list
+end                                      # => :list
+
+allergies = Allergies.new()       # => #<Allergies:0x00007fb6d69480b0 @values={}>
 allergies.add(["dara", "minzy"])  # => ["dara", "minzy"]
 allergies.add(["cl", "minzy"])    # => ["cl", "minzy"]
-allergies.list()                  # => 1
+allergies.list()                  # => [0, 1]
