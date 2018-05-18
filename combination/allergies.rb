@@ -39,18 +39,20 @@ class Allergies
 end
 
 def run()
-  count_test_case = gets.to_i
-    
-  (1..count_test_case).each {
+  results = []
+  Integer(gets).times {
     allergies = Allergies.new()
     
-    number_of_foods = gets.split(' ').last.to_i
+    number_of_foods = Integer(gets.split(' ').last)
     gets
-    (1..number_of_foods).each {
+    number_of_foods.times {
       allergies.add(gets.split(' ').drop(1))
     }
-    puts allergies.count_available_foods()
+
+    results.push(allergies.count_available_foods())
   }
+
+  results.each {|value| puts value }
 end
 
 run()
