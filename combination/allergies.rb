@@ -55,17 +55,21 @@ def run()
   results.each {|value| puts value }
 end
 
-run()
+#run()
 
-allergies = Allergies.new()
-allergies.add(["dara", "minzy"])
-allergies.add(["cl", "minzy"])
-allergies.add(["cl", "dara"])
-allergies.add(["cl"])
-allergies.add(["bom", "dara"])
-allergies.add(["bom", "minzy"])
-allergies.available_foods()
-allergies.count_available_foods()
+require 'benchmark'
+
+puts Benchmark.measure {
+  allergies = Allergies.new()
+  allergies.add(["dara", "minzy"])
+  allergies.add(["cl", "minzy"])
+  allergies.add(["cl", "dara"])
+  allergies.add(["cl"])
+  allergies.add(["bom", "dara"])
+  allergies.add(["bom", "minzy"])
+  allergies.available_foods()
+  allergies.count_available_foods()
+}
 
 allergies = Allergies.new()
 allergies.add(["a", "c", "d", "h", "i", "j"])
