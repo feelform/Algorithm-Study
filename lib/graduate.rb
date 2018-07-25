@@ -14,6 +14,7 @@ mask = mask_fruit 1, 8  # => 9
 unmask_fruit mask       # => {1=>"Orange", 8=>"Apple"}
 
 INF = 999999  # => 999999
+CACHE = []
 
 def bit_count(value)
   value.to_s(2).chars.select { |one| one == '1' }.size  # => 2, 3, 1, 1, 2, 2, 2, 3
