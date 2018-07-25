@@ -15,9 +15,13 @@ unmask_fruit mask       # => {1=>"Orange", 8=>"Apple"}
 
 
 def graduate(semester, taken)
-  
-end  # => :graduate
+  N + 1                        # => 5, 6
+end                            # => :graduate
 
-"4 4 4 4".split.map(&:to_i)  # => [4, 4, 4, 4]
+N = 4  # => 4
+
+graduate(10, 1)  # => 5
 
 
+N = 5            # => 5
+graduate(11, 2)  # => 6
