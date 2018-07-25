@@ -1,36 +1,54 @@
+require 'set'  # => true
 
 def prefix(m)
-  m.times { | index |                                                                               # => 4, 3
-    prefixes = DIC.map {|word| word[0, index + 1] }.select { |prefix| prefix.length == index + 1 }  # => ["d", "d", "d", "d", "d", "d"], ["da", "da", "da", "do", "do", "do"], ["dar", "dat", "dav", "doc", "doc", "doc"], ["dark", "date", "dave", "dock"], ["a", "a", "a", "a", "b", "c", "c"], ["ab", "ab", "ac", "ac", "bc", "cb"], ["acc", "cba"]
-    prefixes_keys = prefixes|[]                                                                     # => ["d"],                          ["da", "do"],                         ["dar", "dat", "dav", "doc"],               ["dark", "date", "dave", "dock"], ["a", "b", "c"],                     ["ab", "ac", "bc", "cb"],             ["acc", "cba"]
+  m.times { | index |                                                                                # => 4
+    prefixes = $dic.select { |prefix| prefix.length >= index + 1 }.map {|word| word[0, index + 1] }  # => ["d", "d", "d", "d", "d", "d"], ["da", "da", "da", "do", "do", "do"], ["dar", "dat", "dav", "doc", "doc", "doc"], ["dark", "date", "dave", "dock"]
+    prefixes_keys = prefixes|[]                                                                      # => ["d"],                          ["da", "do"],                         ["dar", "dat", "dav", "doc"],               ["dark", "date", "dave", "dock"]
+    
+    prefixes_values = prefixes_keys.map { |key| prefixes.count(key)  }  # => [6], [3, 3], [1, 1, 1, 3], [1, 1, 1, 1]
 
-    if prefixes_keys.size == 1  # => true, false, false, false, false, false, false
-      puts prefixes_keys[0]     # => nil
-      next
-    end
+    max = prefixes_values.max  # => 6, 3, 3, 1
+    
+    index = prefixes_values.index(prefixes_values.max)  # => 0, 0, 3, 0
 
-    prefixes_values = prefixes_keys.map { |key| prefixes.select { |prefix| prefix == key }.size  }  # => [3, 3], [1, 1, 1, 3], [1, 1, 1, 1], [4, 1, 2], [2, 2, 1, 1], [1, 1]
-
-    max_of_prefixes_values = prefixes_values.max  # => 3, 3, 1, 4, 2, 1
-
-    index = prefixes_values.index(max_of_prefixes_values)  # => 0, 3, 0, 0, 0, 0
-
-    puts prefixes_keys[index]  # => nil, nil, nil, nil, nil, nil
-  }                            # => 4, 3
+    puts prefixes_keys[index]  # => nil, nil, nil, nil
+  }                            # => 4
   
-end  # => :prefix
+end                                                    # => :prefix
+=begin
+def run()
+  gets.to_i.times { |i|
+    $dic = []
+    word_count, prefix_count = gets.split.map(&:to_i)
+    word_count.times { $dic.push(gets.chomp)}
+    prefix(prefix_count)
+  }
+end
 
-DIC = ["dark", "date", "dave", "doc", "doc", "dock"]  # => ["dark", "date", "dave", "doc", "doc", "dock"]
-prefix(4)                                             # => 4
+run()
+
+require 'benchmark'
+
+puts Benchmark.measure {
+
+$dic = ["dark", "date", "dave", "doc", "doc", "dock"]
+prefix(4)
 
 
-DIC = ["ab", "ab", "ac", "acc", "bc", "c", "cba"]  # => ["ab", "ab", "ac", "acc", "bc", "c", "cba"]
-prefix(3)                                          # => 3
+$dic = ["ab", "ab", "ac", "acc", "bc", "c", "cba"]
+prefix(3)
+
+}
+=end
+$dic = ["dark", "date", "dave", "doc", "doc", "dock"]  # => ["dark", "date", "dave", "doc", "doc", "dock"]
+prefix(4)                                              # => 4
+
+
+#$dic = ["ab", "ab", "ac", "acc", "bc", "c", "cba"]
+#prefix(3)
 
 # >> d
 # >> da
 # >> doc
 # >> dark
-# >> a
-# >> ab
-# >> acc
+
