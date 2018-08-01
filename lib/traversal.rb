@@ -17,6 +17,20 @@ def create_post_order(inorder, root)
   $postorder.push(root)
 end
 
+def run()
+  gets.to_i.times { |i|
+    gets
+    $preorder = gets.split.map(&:to_i)
+    inorder = gets.split.map(&:to_i)
+    $postorder = []
+    create_post_order(inorder, 0)
+    puts $postorder.join(' ')
+  }
+end
+
+run()
+
+=begin
 $preorder = [27, 16, 9, 12, 54, 36, 72]
 inorder = [9, 12, 16, 27, 36, 54, 72]
 $postorder = []
@@ -28,4 +42,7 @@ inorder = [409, 10, 479, 150, 838, 441]
 $postorder = []
 
 create_post_order(inorder, 0)
+=end
+
+
 
