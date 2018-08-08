@@ -1,34 +1,38 @@
-require "set"  # => true
+require "set"
 
 def contain?(point)
-  index = $sorted_nerds.bsearch_index {|pi| point["pi"] > pi }  # => nil,  nil,  0,     nil
-  if index == nil                                               # => true, true, false, true
-    return false                                                # => false, false, false
+  point["pi"]
+  $sorted_nerds
+  index = $sorted_nerds.bsearch_index {|pi| point["pi"] < pi }
+  if $sorted_nerds.length == 0 || index == nil
+    return false
   end
 
-  
-end  # => :contain?
+  $nerds
+  point["qi"]
+  $nerds.select {|key, value| point["qi"] < value} ? 
+end
 
 def join(point)
-  if contain?(point)        # => false, false, nil, false
+  if contain?(point)
     return $nerds.length()
   end
   
-  $nerds[point["pi"]] = point["qi"]  # => 50, 67, 55, 60
+  $nerds[point["pi"]] = point["qi"]
 
-  index = 0                                               # => 0,     0,    0,    0
-  if $sorted_nerds.length > 0                             # => false, true, true, true
-    index = $sorted_nerds.index {|pi| pi > point["pi"] }  # => 0, nil, 1
-    index = index == nil ? $sorted_nerds.length : index   # => 0, 2,   1
-  end                                                     # => nil,  0,        2,            1
-  $sorted_nerds.insert(index, point["pi"])                # => [72], [57, 72], [57, 72, 74], [57, 64, 72, 74]
+  index = 0
+  if $sorted_nerds.length > 0
+    index = $sorted_nerds.index {|pi| pi > point["pi"] }
+    index = index == nil ? $sorted_nerds.length : index
+  end
+  $sorted_nerds.insert(index, point["pi"])
 
-  $nerds.length  # => 1, 2, 3, 4
-end              # => :join
+  $nerds.length
+end
 
-$nerds = {}                      # => {}
-$sorted_nerds = []               # => []
-join({ "pi" => 72, "qi" => 50})  # => 1
-join({ "pi" => 57, "qi" => 67})  # => 2
-join({ "pi" => 74, "qi" => 55})  # => 3
-join({ "pi" => 64, "qi" => 60})  # => 4
+$nerds = {}
+$sorted_nerds = []
+join({ "pi" => 72, "qi" => 50})
+join({ "pi" => 57, "qi" => 67})
+join({ "pi" => 74, "qi" => 55})
+join({ "pi" => 64, "qi" => 60})
