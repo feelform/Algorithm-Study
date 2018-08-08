@@ -1,23 +1,13 @@
-require "set"
-
 def contain?(point)
-  point["pi"]
-  $sorted_nerds
   index = $sorted_nerds.bsearch_index {|pi| point["pi"] < pi }
   if $sorted_nerds.length == 0 || index == nil
     return false
   end
 
-  $nerds
-  point["qi"]
-  $nerds.select {|key, value| point["qi"] < value} ? 
+  $sorted_nerds[index..-1].select {|pi| point["qi"] < $nerds[pi]}.length > 0
 end
 
-def join(point)
-  if contain?(point)
-    return $nerds.length()
-  end
-  
+def add(point)
   $nerds[point["pi"]] = point["qi"]
 
   index = 0
@@ -26,7 +16,27 @@ def join(point)
     index = index == nil ? $sorted_nerds.length : index
   end
   $sorted_nerds.insert(index, point["pi"])
+end
 
+def remove(point) 
+  index = $sorted_nerds.bsearch_index {|pi| point["pi"] < pi}
+
+  if index == nil
+    return
+  end
+
+  $sorted_nerds.slice(0, index)
+  left_nerds = $sorted_nerds.slice(0, index).select {|pi| $nerds[pi] < point["qi"]}
+end
+
+def join(point)
+  if contain?(point)
+    return $nerds.length()
+  end
+
+  remove(point)
+  add(point)
+  
   $nerds.length
 end
 
