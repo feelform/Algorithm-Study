@@ -1,6 +1,6 @@
 
 def contain?(point)
-  $sorted_nerds.bsearch_index {|pi| point["pi"] < pi && point["qi"] < $nerds[pi]} != nil
+  $sorted_nerds.bsearch {|pi| point["pi"] < pi && point["qi"] < $nerds[pi]} != nil
 end
 
 def add(point)
@@ -33,8 +33,8 @@ def join(point)
     return $sorted_nerds.length
   end
 
-  remove(point)
-  add(point)
+  #remove(point)
+  #add(point)
   
   $sum += $sorted_nerds.length
 end
