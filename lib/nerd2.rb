@@ -33,8 +33,8 @@ def join(point)
     return $sorted_nerds.length
   end
 
-  #remove(point)
-  #add(point)
+  remove(point)
+  add(point)
   
   $sum += $sorted_nerds.length
 end
