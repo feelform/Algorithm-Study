@@ -1,58 +1,61 @@
 class EditorWars
 
-  def initialize(x)
-    @parent = Array.new(x) {|i| i}    # => [0, 1, 2, 3]
-    @enemies = Array.new(x) {|i| -1}  # => [-1, -1, -1, -1]
-  end                                 # => :initialize
+  def initialize(n)
+    @parent = Array.new(n) {|i| i}
+    @enemies = Array.new(n) {|i| -1}
+    @ranks = Array.new(n) {|i| 0}
+  end
 
   def find(x)
-    return x if @parent[x] == x    # => true, true, true, true, true, true, true, true
+    return x if @parent[x] == x
     @parent[x] = find(@parent[x])
-  end                              # => :find
+  end
 
   def union(a, b)
-    return [a, b].max if a == -1 || b== -1  # => false, true, false, true
-    @parent[find(a)] = @parent[find(b)]     # => 1, 2
-  end                                       # => :union
+    return [a, b].max if a == -1 || b== -1
+
+    friend_a = find(a)
+    friend_b = find(b)
+
+    return friend_a if friend_a == friend_b
+    friend_a, friend_b = friend_b, friend_a if ranks[friend_a] > ranks[friend_b]
+
+    
+    @parent[find(a)] = @parent[find(b)]
+  end
 
   def sets
     @parent.collect{ |i| find(i) }.uniq.length
-  end                                           # => :sets
+  end
 
   def add(happy, a, b)
-    if happy == "ACK"   # => true, true, false
-      if !ack(a, b)     # => false, false
+    if happy == "ACK"
+      if !ack(a, b)
         
-      end            # => nil, nil
+      end
     else
-      if !dis(a, b)  # ~> NoMethodError: undefined method `dis' for #<EditorWars:0x00007fafdb944a48>
+      if !dis(a, b)
        
       end
-    end    # => nil, nil
-  end      # => :add
+    end
+  end
 
   def ack(a, b)
-    friend_a = find(a)  # => 0, 1
-    friend_b = find(b)  # => 1, 2
+    friend_a = find(a)
+    friend_b = find(b)
 
-    return false if @enemies[a] == b  # => false, false
+    return false if @enemies[a] == b
     
-    friend = union(friend_a, friend_b)                     # => 1,    2
-    enemy = union(@enemies[friend_a], @enemies[friend_b])  # => -1,   -1
-    @enemies[friend] = enemy                               # => -1,   -1
-    @enemies[enemy] = friend if enemy != -1                # => nil,  nil
-    return true                                            # => true, true
-  end                                                      # => :ack
-end                                                        # => :ack
+    friend = union(friend_a, friend_b)
+    enemy = union(@enemies[friend_a], @enemies[friend_b])
+    @enemies[friend] = enemy
+    @enemies[enemy] = friend if enemy != -1
+    return true
+  end
+end
 
-wars = EditorWars.new(4)  # => #<EditorWars:0x00007fafdb944a48 @parent=[0, 1, 2, 3], @enemies=[-1, -1, -1, -1]>
-wars.add("ACK", 0, 1)     # => nil
-wars.add("ACK", 1, 2)     # => nil
+wars = EditorWars.new(4)
+wars.add("ACK", 0, 1)
+wars.add("ACK", 1, 2)
 wars.add("DIS", 1, 3)
 wars.add("ACK", 2, 0)
-
-# ~> NoMethodError
-# ~> undefined method `dis' for #<EditorWars:0x00007fafdb944a48>
-# ~>
-# ~> /var/folders/2p/wqc2mfzx69bfpxdq9r82wkv40000gn/T/seeing_is_believing_temp_dir20180905-4682-90pzmx/program.rb:28:in `add'
-# ~> /var/folders/2p/wqc2mfzx69bfpxdq9r82wkv40000gn/T/seeing_is_believing_temp_dir20180905-4682-90pzmx/program.rb:51:in `<main>'
