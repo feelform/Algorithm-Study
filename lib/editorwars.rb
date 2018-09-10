@@ -59,3 +59,9 @@ wars.add("ACK", 0, 1)
 wars.add("ACK", 1, 2)
 wars.add("DIS", 1, 3)
 wars.add("ACK", 2, 0)
+
+def accepts_hash(var)
+  
+end
+
+accepts_hash :arg1 => 'given arg1', :argN => 'giving argN'
